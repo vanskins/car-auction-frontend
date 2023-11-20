@@ -49,6 +49,10 @@ const Register = () => {
         <br className="max-md:hidden" />
         <span className="orange_gradient text-center">Register new account</span>
       </h1>
+      <p className="desc text-center">
+        Welcome to Car auction app it is a platform where people can get their cars in an auction and
+        people can bid. Developed by Van Alfred P. Sabacajan
+      </p>
       <div className="w-full text-left">
         <form
           className="mt-10 w-full flex flex-col gap-7 glassmorphism"

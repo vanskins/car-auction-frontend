@@ -1,13 +1,50 @@
+"use client"
+
 import Link from 'next/link'
-type Props = {
-  submitting: boolean;
-  data: any;
-  setData: (val: any) => void;
-  handleSubmit: (e: any) => void;
-}
+import { useState, useEffect } from 'react';
+import { useCookies } from 'next-client-cookies';
+import { useRouter } from 'next/navigation'
+import { toast } from 'react-toastify';
 
+const LoginForm = () => {
+  const [data, setData] = useState({
+    email: "",
+    password: ""
+  })
+  const [submitting, setSubmitting] = useState<boolean>(false)
+  const router = useRouter() 
+  const cookies = useCookies();
 
-const LoginForm = ({ submitting, setData, handleSubmit, data}: Props) => {
+  useEffect(() => {
+    const authToken = cookies.get('CAR-AUCTION-API-AUTH')
+    if (authToken) {
+      router.push('/feed')
+    }
+  }, [])
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    try {
+      const response = await fetch('http://localhost:8080/auth/login', {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: data.email,
+          password: data.password,
+        })
+      })
+      const user = await response.json();
+      if (response.ok) {
+        cookies.set('CAR-AUCTION-API-AUTH', user.authentication.sessionToken)
+        toast('Login succcessfully!')
+        router.replace('/feed')
+      }
+    } catch (error) {
+      toast('Incorrect credentials, please try again.')
+    }
+  }
+
   return (
     <section className="w-full mt-10 max-w-full flex-end flex-col">
       <h1 className="head_text text-center">
