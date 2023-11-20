@@ -1,6 +1,8 @@
 "use client";
+
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import Link from 'next/link'
 
 type Auction = {
   brand: string;
@@ -11,13 +13,14 @@ type Auction = {
   priceIncrement: number;
   expiryDate: string;
   open: boolean;
+  _id: string;
 }
 
 const Feed = () => {
   const [auctions, setAuctions] = useState<Auction[]>([])
 
   useEffect(() => {
-    const getPrompts = async () => {
+    const getAuctions = async () => {
       const response = await axios.get('http://localhost:8080/api/auction', {
         withCredentials: true,
         headers: {
@@ -28,7 +31,7 @@ const Feed = () => {
         setAuctions(response.data)
       }
     }
-    getPrompts()
+    getAuctions()
   }, [])
   return (
     <section className="w-full flex-center flex-col">
@@ -56,12 +59,16 @@ const Feed = () => {
                 <p>Expiry date - {item.expiryDate}</p>
               </div>
               <div className="mt-5 flex-center gap-4 border-t border-gray-100 pt-3">
-                <button
-                  type="submit"
-                  className="px-5 w-32 font-semibold py-1.5 text-sm bg-blue-600 rounded-full text-white"
+                <Link
+                  href={`/auction/${item._id}`}
                 >
-                  ₱ Place Bid
-                </button>
+                  <button
+                    type="submit"
+                    className="px-5 w-32 font-semibold py-1.5 text-sm bg-blue-600 rounded-full text-white"
+                  >
+                    ₱ Place Bid
+                  </button>
+                </Link>
               </div>
             </div>
           )
