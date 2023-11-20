@@ -1,13 +1,11 @@
 "use client"
 import Link from 'next/link'
 import { useState, useEffect, useContext } from 'react';
-import { useCookies } from 'next-client-cookies';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import UserContext from '@/store/userContext';
 
 const Navbar = () => {
-  const cookies = useCookies();
   const { state, removeAuthToken } = useContext(UserContext);
   
   return (
@@ -25,7 +23,7 @@ const Navbar = () => {
             Profile
           </Link>
           <Link 
-            href="/"
+            href="/login"
             className="blue_btn" 
             onClick={() => {
               removeAuthToken();

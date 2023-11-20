@@ -164,7 +164,7 @@ const Profile = () => {
               return (
                 <div className="rounded-md bg-white shadow-lg w-full mt-4 p-2" key={k}>
                   <div className="flex flex-col">
-                    <p className="bg-green-600 text-white p-2 mb-2 font-semibold rounded-md">Status: {item.open ? "OPEN" : "CLOSED"}</p>
+                    <p className={`${item.open ? "bg-green-600" : "bg-red-600"} text-white p-2 mb-2 font-semibold rounded-md`}>Status: {item.open ? "OPEN" : "CLOSED"}</p>
                     <p className="font-satoshi font-semibold text-gray-900">Name: {item.user.firstName}, {item.user.lastName}</p>
                     <p>Contacts: {item.user.phoneNumber}, {item.user.email}</p>
                     <p>Email: {item.user.email}</p>
@@ -174,6 +174,14 @@ const Profile = () => {
                     <p>Opening price - ₱{item.openingPrice.toLocaleString("en-US")}</p>
                     { item.priceIncrement > 0 && <p>Current price - ₱{item.priceIncrement.toLocaleString("en-US")}</p>}
                     <p>Expiry date - {item.expiryDate}</p>
+                  </div>
+                  <div className="mt-5 flex-center gap-4 border-t border-gray-100 pt-3">
+                    <button
+                      type="submit"
+                      className="px-5 w-40 mb-5 mt-5 font-semibold py-1.5 text-sm bg-red-600 rounded-full text-white"
+                    >
+                      Close this bid
+                    </button>
                   </div>
                 </div>
               )

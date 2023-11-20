@@ -118,7 +118,7 @@ const Auction = ({ params }: { params: { id: string } }) => {
         {
           auction &&
           <div>
-            <p className="bg-green-600 text-white p-2 mb-2 font-semibold rounded-md">Status: {auction.open ? "OPEN" : "CLOSED"}</p>
+            <p className={`${auction.open ? "bg-green-600" : "bg-red-600"} text-white p-2 mb-2 font-semibold rounded-md`}>Status: {auction.open ? "OPEN" : "CLOSED"}</p>
             <p className="font-satoshi font-semibold text-gray-900">Name: {auction.user.firstName}, {auction.user.lastName}</p>
             <p>Contacts: {auction.user.phoneNumber}, {auction.user.email}</p>
             <p>Email: {auction.user.email}</p>
@@ -148,12 +148,23 @@ const Auction = ({ params }: { params: { id: string } }) => {
               />
             </div>
             <div className="flex-1 items-center">
-              <button
-                type="submit"
-                className="self-center mt-10 ml-5 px-5 py-1.5 text-sm bg-primary-orange rounded-full text-white"
-              >
-                Place bid
-              </button>
+              {
+                auction?.open ?
+                <button
+                  type="submit"
+                  className="self-center mt-10 ml-5 px-5 py-1.5 text-sm bg-primary-orange rounded-full text-white"
+                >
+                  Place bid
+                </button>
+                :
+                <button
+                  type="submit"
+                  disabled
+                  className="self-center mt-10 ml-5 px-5 py-1.5 text-sm bg-gray-400 rounded-full text-white"
+                >
+                  Bid is closed
+                </button>
+              }
             </div>
           </div>
         </form>
