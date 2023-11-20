@@ -36,7 +36,7 @@ export default function Home() {
       const user = await response.json();
       if (response.ok) {
         cookies.set('CAR-AUCTION-API-AUTH', user.authentication.sessionToken)
-        router.push('/feed')
+        router.replace('/feed')
       }
       console.log(user, 'RES')
     } catch (error) {
