@@ -1,5 +1,3 @@
-import { cookies } from 'next/headers'
-
 type Props = {
   submitting: boolean;
   data: any;
