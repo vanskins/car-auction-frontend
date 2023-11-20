@@ -1,8 +1,9 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import axios, { AxiosError} from 'axios'
 import moment from 'moment'
+import { toast } from 'react-toastify';
 
 type Auction = {
   brand: string;
@@ -26,6 +27,7 @@ const Auction = ({ params }: { params: { id: string } }) => {
   const [auction, setAuction] = useState<Auction | null>(null)
   const [bids, setBids] = useState<Bids[] | null>(null)
   const [bidPrice, setBidPrice] = useState<string | null>(null)
+  const [submitting, isSubmitting] = useState<boolean>(false)
 
   useEffect(() => {
     const getAuctions = async () => {
@@ -55,12 +57,29 @@ const Auction = ({ params }: { params: { id: string } }) => {
     }
     getBids()
     getAuctions()
-  }, [params.id])
+  }, [params.id, submitting])
+
+  useEffect(() => {
+    const getBids = async () => {
+      const response = await axios.get(`http://localhost:8080/api/bid/${params.id}`, {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        }
+      })
+      console.log(response, 'RESPONSE')
+      if (response && response.statusText === "OK") {
+        setBids(response.data)
+      }
+    }
+    getBids()
+  }, [params.id, submitting])
 
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (bidPrice) {
+      isSubmitting(true)
       try {
         const response = await axios.post('http://localhost:8080/api/bid',
         {
@@ -74,13 +93,17 @@ const Auction = ({ params }: { params: { id: string } }) => {
         },
         })
         if (response.statusText) {
-          console.log('success')
+          toast('Bid placed successfully!')
         }
+        isSubmitting(false)
       } catch (error) {
-        console.log(error, 'Error')
+        const err = error as AxiosError
+        if (err && err.response && err.response.data) {
+          toast(err.response.data?.message);
+        }
+        isSubmitting(false)
       }
-    }
-    
+    } 
   }
 
 
@@ -102,7 +125,7 @@ const Auction = ({ params }: { params: { id: string } }) => {
             <p>Brand - {auction.brand}</p>
             <p>Year and model - {auction.year}, {auction.model}</p>
             <p>Opening price - ₱{auction.openingPrice.toLocaleString("en-US")}</p>
-            {auction.priceIncrement > 0 && <p>Current price - ₱{auction.priceIncrement.toLocaleString("en-US")}</p>}
+            {auction.priceIncrement > 0 && <p>Next bid price is greater than - ₱{auction.priceIncrement.toLocaleString("en-US")}</p>}
             <p>Expiry date - {auction.expiryDate}</p>
           </div>
         }

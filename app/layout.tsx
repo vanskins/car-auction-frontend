@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { CookiesProvider } from 'next-client-cookies/server';
 import '@/styles/global.css'
 import Navbar from '@/components/Navbar'
+import { ToastContainer, toast } from 'react-toastify';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -22,6 +23,7 @@ export default function RootLayout({
           </div>
           <main className="app">
             <Navbar />
+            <ToastContainer />
             {children}
           </main>
         </body>

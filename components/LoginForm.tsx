@@ -1,9 +1,11 @@
+import Link from 'next/link'
 type Props = {
   submitting: boolean;
   data: any;
   setData: (val: any) => void;
   handleSubmit: (e: any) => void;
 }
+
 
 const LoginForm = ({ submitting, setData, handleSubmit, data}: Props) => {
   return (
@@ -38,12 +40,14 @@ const LoginForm = ({ submitting, setData, handleSubmit, data}: Props) => {
           onChange={(e) => setData({ ...data, password: e.target.value })}
         />
         <div className="flex-end mx-3 mb-5 gap-4">
-          <button
-            type="submit"
-            className="px-5 py-1.5 text-sm bg-green-600 rounded-full text-white"
-          >
-            Register
-          </button>
+          <Link href="/register">
+            <button
+              type="submit"
+              className="px-5 py-1.5 text-sm bg-green-600 rounded-full text-white"
+            >
+              Register
+            </button>
+          </Link>
           <button
             type="submit"
             className="px-5 py-1.5 text-sm bg-primary-orange rounded-full text-white"
