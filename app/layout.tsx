@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { CookiesProvider } from 'next-client-cookies/server';
 import '@/styles/global.css'
+import Navbar from '@/components/Navbar'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -20,6 +21,7 @@ export default function RootLayout({
             <div className="gradient" />
           </div>
           <main className="app">
+            <Navbar />
             {children}
           </main>
         </body>

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import LoginForm from '@/components/LoginForm'
 import { useCookies } from 'next-client-cookies';
 import { useRouter } from 'next/navigation'
@@ -14,6 +14,12 @@ export default function Home() {
   const router = useRouter() 
   const cookies = useCookies();
 
+  useEffect(() => {
+    const authToken = cookies.get('CAR-AUCTION-API-AUTH')
+    if (authToken) {
+      router.push('/feed')
+    }
+  }, [])
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
