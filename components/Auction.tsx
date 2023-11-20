@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import axios, { AxiosError} from 'axios'
 import moment from 'moment'
 import { toast } from 'react-toastify';
+import Layout from './Layout';
 
 type Auction = {
   brand: string;

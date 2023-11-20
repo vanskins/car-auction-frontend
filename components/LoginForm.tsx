@@ -1,12 +1,20 @@
 "use client"
 
 import Link from 'next/link'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useCookies } from 'next-client-cookies';
 import { useRouter } from 'next/navigation'
 import { toast } from 'react-toastify';
+import UserContext from '@/store/userContext';
+
+type Context = {
+  state: any;
+  setState: () => void
+}
 
 const LoginForm = () => {
+  const { addAuthToken } = useContext(UserContext);
+  
   const [data, setData] = useState({
     email: "",
     password: ""
@@ -38,6 +46,7 @@ const LoginForm = () => {
       if (response.ok) {
         cookies.set('CAR-AUCTION-API-AUTH', user.authentication.sessionToken)
         toast('Login succcessfully!')
+        addAuthToken(user.authentication.sessionToken)
         router.replace('/feed')
       }
     } catch (error) {

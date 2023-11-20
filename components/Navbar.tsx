@@ -1,20 +1,22 @@
 "use client"
 import Link from 'next/link'
+import { useState, useEffect, useContext } from 'react';
 import { useCookies } from 'next-client-cookies';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import UserContext from '@/store/userContext';
 
 const Navbar = () => {
   const cookies = useCookies();
-  const authToken = cookies.get('CAR-AUCTION-API-AUTH')
-
+  const { state, removeAuthToken } = useContext(UserContext);
+  
   return (
     <nav className="flex-between w-full mb-16 pt-3">
       <Link href="/" className="flex gap-2">
         <p className="logo_text">CAR AUCTION</p>
       </Link>
       {
-        authToken &&
+        state.authToken &&
         <div className="flex gap-3 md:gap-5">
           <Link href="/feed" className="outline_btn">
             Feed
@@ -26,7 +28,7 @@ const Navbar = () => {
             href="/"
             className="blue_btn" 
             onClick={() => {
-              cookies.remove('CAR-AUCTION-API-AUTH')
+              removeAuthToken();
               toast("Logging out");
             }}
           >

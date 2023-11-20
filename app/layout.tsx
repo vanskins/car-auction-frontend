@@ -3,6 +3,8 @@ import { CookiesProvider } from 'next-client-cookies/server';
 import '@/styles/global.css'
 import Navbar from '@/components/Navbar'
 import { ToastContainer, toast } from 'react-toastify';
+import { cookies } from 'next/headers'
+import Layout from '@/components/Layout';
 
 export const metadata: Metadata = {
   title: 'Car auction',
@@ -14,7 +16,9 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  console.log('layout')
+  const cookieStore = cookies()
+  const authToken = cookieStore.get('CAR-AUCTION-API-AUTH')
+  
   return (
     <html lang="en">
       <CookiesProvider>
@@ -22,11 +26,13 @@ export default function RootLayout({
           <div className="main">
             <div className="gradient" />
           </div>
-          <main className="app">
-            <Navbar />
-            <ToastContainer />
-            {children}
-          </main>
+          <Layout>
+            <main className="app">
+              <Navbar />
+              <ToastContainer />
+              {children}
+            </main>
+          </Layout>
         </body>
       </CookiesProvider>
     </html>

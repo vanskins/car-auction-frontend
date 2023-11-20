@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import moment from 'moment'
+import { toast } from 'react-toastify'
 
 const Profile = () => {
   const [profile, setProfile] = useState<any>({})
@@ -26,14 +27,19 @@ const Profile = () => {
 
   useEffect(() => {
     const getMyAuctions = async () => {
-      const response = await axios.get('http://localhost:8080/api/auctions/me', {
-        withCredentials: true,
-        headers: {
-          "Content-Type": "application/json",
+      try {
+        const response = await axios.get('http://localhost:8080/api/auctions/me', {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          }
+        })
+        if (response && response.statusText === "OK") {
+          setAuctions(response.data)
         }
-      })
-      if (response && response.statusText === "OK") {
-        setAuctions(response.data)
+      } catch (error) {
+        console.log(error, 'ERror')
+        toast('Cannot process request right now!')
       }
     }
     getMyAuctions()
@@ -166,7 +172,7 @@ const Profile = () => {
                     <p>Brand - {item.brand}</p>
                     <p>Year and model - {item.year}, {item.model}</p>
                     <p>Opening price - ₱{item.openingPrice.toLocaleString("en-US")}</p>
-                    <p>Current price - ₱{item.priceIncrement.toLocaleString("en-US")}</p>
+                    { item.priceIncrement > 0 && <p>Current price - ₱{item.priceIncrement.toLocaleString("en-US")}</p>}
                     <p>Expiry date - {item.expiryDate}</p>
                   </div>
                 </div>
