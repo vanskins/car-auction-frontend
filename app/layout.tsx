@@ -1,4 +1,6 @@
 import type { Metadata } from 'next'
+import { CookiesProvider } from 'next-client-cookies/server';
+import '@/styles/global.css'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -12,7 +14,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <CookiesProvider>
+        <body>
+          <div className="main">
+            <div className="gradient" />
+          </div>
+          <main className="app">
+            {children}
+          </main>
+        </body>
+      </CookiesProvider>
     </html>
   )
 }
